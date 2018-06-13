@@ -1,0 +1,40 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:8-stretch
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - dependency-cache-{{ checksum "ci_test/package.json" }}
+          - dependency-cache-
+      - run:
+          name: Update NPM
+          command: |
+            cd ci_test
+            sudo npm install -g npm@latest
+      - save_cache:
+          key: dependency-cache-{{ checksum "ci_test/package.json" }}
+          paths:
+            - ./ci_test/node_modules
+      - run:
+          name: npm install for ci_test
+          command: |
+            cd ci_test
+            npm install
+      - run:
+          name: npm test for ci_test
+          command: |
+            cd ci_test
+            npm test
+      - store_artifacts:
+          path: test-results.xml
+          prefix: tests
+      - store_test_results:
+          path: test-results.xml
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
