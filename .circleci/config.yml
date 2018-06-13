@@ -8,26 +8,26 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - dependency-cache-{{ checksum "./package.json" }}
+          - dependency-cache-{{ checksum "~/package.json" }}
           - dependency-cache-
       - run:
           name: Update NPM
           command: |
-            cd ci_test
+            cd ~
             sudo npm install -g npm@latest
       - save_cache:
-          key: dependency-cache-{{ checksum "./package.json" }}
+          key: dependency-cache-{{ checksum "~/package.json" }}
           paths:
             - ./node_modules
       - run:
           name: npm install for ci_test
           command: |
-            cd ci_test
+            cd ~
             npm install
       - run:
           name: npm test for ci_test
           command: |
-            cd ci_test
+            cd ~
             npm test
       - store_artifacts:
           path: test-results.xml
