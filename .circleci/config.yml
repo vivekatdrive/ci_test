@@ -22,12 +22,12 @@ jobs:
       - run:
           name: npm install for ci_test
           command: |
-            cd /
+            cd ci_test
             npm install
       - run:
           name: npm test for ci_test
           command: |
-            cd /
+            cd ci_test
             npm test
       - store_artifacts:
           path: test-results.xml
