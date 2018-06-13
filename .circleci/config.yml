@@ -3,6 +3,7 @@ jobs:
   build:
     docker:
       - image: circleci/node:8-stretch
+	  working_directory: ~/ci_test
     steps:
       - checkout
       - restore_cache:
