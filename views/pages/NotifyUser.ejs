@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <% include ../partials/head %>
+<body class="container">
+
+    <header>
+        <% include ../partials/header %>
+    </header>
+
+    <main>
+        <div class="">
+            <div class="col-sm-6 panelLeft" id="teamWrap">
+                <section class="panel panel-default">
+                    <header class="panel-heading font-bold">Add Team</header>
+                    <div class="panel-body">
+                        <form role="form" id="NotifyForm">
+                            <div class="form-group">
+                                <label>Enter Message</label> <input type="text" id="txtMessage" /><br />
+                            </div>
+                            <input type="submit" class="btn ntn-default" value="Notify User" />
+                        </form>
+                    </div>
+                </section>
+            </div>
+            <script>
+                jQuery(function ($) {
+                    var socket = io.connect();
+                    var $notifyForm = $('#NotifyForm');
+                    var $notifyMessage = $('#txtMessage');
+                    var $error = $('#error');
+
+                    $notifyForm.submit(function (e) {
+                     
+                        e.preventDefault();
+                        if ($notifyMessage.val() == "")
+                            return alert("Please enter Message");
+
+                        var obj = {};
+                        obj.notifyMessage = $notifyMessage.val();
+                        socket.emit('NotifyUser', obj);
+                            
+                        $notifyMessage.val('');
+                    });
+                });
+
+            </script>
+        </div>
+    </main>
+
+
+
+</body>
+</html>

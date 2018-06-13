@@ -1,0 +1,82 @@
+﻿body {
+    padding-top: 80px;
+    background-image: url("../images/backgroundtile.png");
+    background-repeat: repeat;
+}
+
+.registerFormStyle {
+    max-width: 500px;
+    min-height: 400px;
+    max-height: 500px;
+    margin: 0px 15px 100px 15px;
+    background: #fff;
+    border-radius: 2px;
+    padding: 40px;
+    font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+.glowing-border {
+    border: 2px solid transparent;
+    -moz-border-image: -moz-linear-gradient(top, #FFFFFF 0%, #5E5D5D 100%);
+    -webkit-border-image: -webkit-linear-gradient(top, #FFFFFF 0%, #5E5D5D 100%);
+    border-image: linear-gradient(to bottom, #FFFFFF 0%, #5E5D5D 100%);
+    border-image-slice: 1;
+}
+
+.glowinPanel {
+    border: 2px solid #ED1C24;
+}
+
+
+
+input[type="text"],input[type="email"], input[type="password"] {
+    background-image: url("../images/background.png");
+    border-color: transparent;
+    outline: 0 none;
+    border-radius: 0;
+    color: #dddddd;
+}
+    input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+        background-color: transparent;
+        border-color: transparent;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(0,0,0,0);
+        outline: 0 none;
+    }
+input[type="checkbox"] {
+    border: 2px solid transparent;
+    -moz-border-image: -moz-linear-gradient(top, #ED1C24 0%, #6C0D11 100%);
+    -webkit-border-image: -webkit-linear-gradient(top, #ED1C24 0%, #6C0D11 100%);
+    border-image: linear-gradient(to bottom, #ED1C24 0%, #6C0D11 100%);
+    border-image-slice: 1;
+}
+
+.mainPanel {
+    background-image: url("../images/background.png");
+    background-repeat: no-repeat;
+    border: 2px solid transparent;
+    -moz-border-image: -moz-linear-gradient(top, #ED1C24 0%, #6C0D11 100%);
+    -webkit-border-image: -webkit-linear-gradient(top, #ED1C24 0%, #6C0D11 100%);
+    border-image: linear-gradient(to bottom, #ED1C24 0%, #6C0D11 100%);
+    border-image-slice: 1;
+}
+
+
+.box {
+    background: red; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(#808080, #272727); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#808080, #272727); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#808080, #272727); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#808080, #272727); /* Standard syntax */
+}
+
+.inputpanel {
+    background-image: url("../images/background.png");
+}
+
+button, a {
+    background: transparent;
+    border: none;
+}
+    button:focus {
+        outline: none;
+    }

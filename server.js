@@ -1,126 +1,126 @@
-var http = require('http');
-var cron = require('node-cron');
-const Gamedig = require('gamedig');
-var mysql = require('mysql');
-// var config = require('./config.json')
-var iplocation = require('iplocation');
-var sleep = require('system-sleep');
-var env = require("./env");
-var app = http.createServer(function (req, res) {
-    res.writeHead(200, {
-        'Content-Type': 'text/plain'
+var express = require("express"),
+    request = require('request'),
+    util = require('util'),
+    fs = require("fs"),
+    app = express(),
+    server = require('http').createServer(app),
+    io = require("socket.io").listen(server),
+    path = __dirname + "/LogFile.txt",
+    crypto = require('crypto'),
+    bodyParser = require('body-parser'),
+    request = require('request');
+var https = require('https');
+https.createServer(app).listen(4433);
+server.listen(8081);
+var rawBodySaver = function (req, res, buf, encoding) {
+    if (buf && buf.length) {
+        req.rawBody = buf.toString(encoding || 'utf8');
+    }
+}
+
+app.use(bodyParser.json({ verify: rawBodySaver }));
+app.use(bodyParser.urlencoded({ verify: rawBodySaver, extended: true }));
+app.use(bodyParser.raw({ verify: rawBodySaver, type: '*/*' }));
+
+app.get('/', function (req, res) {
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.end('Challenger Notification service is UP........\n');
+});
+app.on('error', function (err) {
+    fs.writeFile(path, error, function (err) {
+        if (err) return console.log(err);
+        console.log(error + ' > LogFile.txt');
     });
-    res.end('Background Processor is running......');
-}).listen(1337, "127.0.0.1");
-//sets port and IP address of the server
-console.log('Server running at http://127.0.0.1:1337/');
-env.set_environment();
-console.log('Environment variables defined');
-var connection = mysql.createConnection({
-    host: process.env.DBHost,
-    user: process.env.DBUsername,
-    password: process.env.DBPassword,
-    database: process.env.Database
+    return res.json({ status: '400', message: "message :error" });
 });
-connection.connect();
-console.log('DB Connected');
-CrawlSteam();
-
-cron.schedule('0 */' + process.env.RefreshIntervalInMinute + ' * * * *', function () {
-    CrawlSteam();
-});
-
-function CrawlSteam() {
-    connection.query('SELECT * FROM chal_server WHERE id IN (SELECT DISTINCT server_id FROM chal_active_challenger)', function (err, rows, fields) {
-        rows.forEach(element => {
-            if ((element.latitude == null && element.longitude == null) || (element.latitude == 'undefined' && element.longitude == 'undefined')) {
-                GetServerDetailsFromIP(element.ip_address, function (result) {
-                    console.log("fetching geolocation for " + element.ip_address + " id= " + element.id);
-                    if(result != undefined && result != null)
-                    {
-                        element.country_code = result.country_code;
-                        element.country = result.country_name;
-                        element.latitude = result.latitude;
-                        element.longitude = result.longitude;
-                        element.city = result.city;
-                    }
-                    GetSteamVariables(element.ip_address, function (rs) {
-                        // console.log(rs);
-                        console.log("fetching steam data for " + element.ip_address + " id= " + element.id);
-                        if(rs != null && rs!=undefined)
-                        {
-                            element.game_match_map = rs.map;
-                            element.players = rs.raw.numplayers;
-                            element.bots = rs.raw.numbots;
-                            element.maxPlayers = rs.maxplayers;
-                            element.server_name = rs.name;
-                            console.log(element);
-                            var sql = "UPDATE chal_server SET server_name=?, country=?, latitude=?, longitude=?, city=?, game_match_map=?, players=?, bots=?, maxPlayers=?, country_code=?, last_updated = NOW()  WHERE id = ?";
-                            var query = connection.query(sql, [element.server_name, element.country, element.latitude, element.longitude, element.city, element.game_match_map, element.players, element.bots, element.maxPlayers, element.country_code, element.id], function (err, result) {
-                                console.log("Record Updated!!");
-                            });
-                        }
-                    });
-                });
-            } else {
-                GetSteamVariables(element.ip_address, function (rs) {
-                    // console.log(rs);
-                    console.log("fetching steam data for " + element.ip_address + " id= " + element.id);
-                    if (rs != null && rs != undefined) {
-                        element.game_match_map = rs.map;
-                        element.players = rs.raw.numplayers;
-                        element.bots = rs.raw.numbots;
-                        element.maxPlayers = rs.maxplayers;
-                        element.server_name = rs.name;
-                        console.log(element);
-                        var sql = "UPDATE chal_server SET server_name=?, game_match_map=?, players=?, bots=?, maxPlayers=?, last_updated = NOW()  WHERE id = ?";
-                        var query = connection.query(sql, [element.server_name, element.game_match_map, element.players, element.bots, element.maxPlayers, element.id], function (err, result) {
-                            console.log("Record Updated!!");
-                        });
-                    }
-
-                });
-            }
-            //console.log("id is " + element.id);
-            sleep(3000);
+app.post('/subscribe', function(req, res) {
+var requestBody=JSON.parse(req.rawBody);
+//WriteLog(util.inspect(req, { showHidden: true, depth: null }));
+    if (requestBody.Type === 'SubscriptionConfirmation') {
+        https.get(requestBody.SubscribeURL, function (res) {
+          // You have confirmed your endpoint subscription
         });
-        //connection.end();
-    });
-}
+    }
+});
+app.post('/ChallengerNotification',function(req,res){
+ var requestBody=JSON.parse(req.rawBody);
+    //WriteLog(req.rawBody);
+   if (requestBody.Type === 'SubscriptionConfirmation') {
+      //WriteLog(requestBody.SubscribeURL);
+	  https.get(requestBody.SubscribeURL, function (res) {
+            // You have confirmed your endpoint subscription
+		    //WriteLog("confirmed");
+		    res.on("data", function(chunk) {
+            //WriteLog("BODY: " + chunk);
+            });
+        });	
+    }
+	
+	if(requestBody.Type === 'Notification'){
+	 //WriteLog(requestBody.Type+""+requestBody.Message);
+	 var messageBody=JSON.parse(requestBody.Message);
+	 //WriteLog(messageBody.userId);
+     io.sockets.emit(messageBody.userId.toLowerCase(), messageBody.message);
+     //WriteLog('server push notification at ' + new Date());
+	 res.json({success : "Delivered Successfully", status : 200});
+	}
+	
+	//WriteLog(requestBody.Type);	
+ 
+});
 
-function GetSteamVariables(ip_address, callback) {
-    var serverIp = ip_address.match(/((\d{1,3}.){3}\d{1,3})/)[0];
-    var port = ip_address.match(/(:\d+)/)[0];
-    port = port.replace(':', '');
-    Gamedig.query({
-        type: 'csgo',
-        host: serverIp,
-        port: port,
-        timeout: 5000
-    }).then((state) => {
-        callback(state);
-    }).catch((error) => {
-        console.log("Server is offline");
-        callback(null);
+app.post('/api/PushNotifiication', function (req, res) {
+    app.on('error', function (error) {
+        //WriteLog(error);
+        return res.json({ status: '400', message: "message :error" });
     });
-}
+    io.sockets.emit(req.body.Message.userId, req.body.Message.message);
+    if (io.sockets.connected) {
+        //WriteLog('server push notification at '+new Date());
+        //res.json({ status: '200', message: "message " + req.body.Message.message + " recieved at " + Date() });
+    }
+    else {
+        WriteLog('server not able to push notification at ' + new Date());
+        res.json({ status: '404', message: "not connected" });}
+   
+});
+// io.sockets.on("connection", function (socket) {
+//     var data = "Server is connected with clinet id :" + socket.id;
+//     WriteLog(data);
+//     socket.on('connect_error', function () {
+//         WriteLog('Connection Failed at '+new Date()+'with clinet id '+socket.id);
+//             });
+//     socket.on('PushMessageResponse', function (msg) {
+//             });
+//     socket.on('disconnect', function () {
+//         WriteLog('clint id '+socket.id+' disconnected at '+new Date());
+//           });
+//     socket.on('reconnecting', function (nextRetry) {
+//         WriteLog('trying to reconnect at '+new Date()+' with client id '+socket.id);
+//           });
+//     socket.on('reconnect_failed', function () {
+//         WriteLog('Reconnect failed at '+new Date()+' with client id '+socket.id);
+//            });
+//     socket.on('connect_failed', function () {
+//         WriteLog('Connection Failed at '+new Date()+' with client id '+socket.id);
+//           });
+//    });
 
-function GetServerDetailsFromIP(ip_address, callback) {
-    var serverIp = ip_address.match(/((\d{1,3}.){3}\d{1,3})/)[0];
-    var port = ip_address.match(/(:\d+)/)[0];
-    port = port.replace(':', '');
-    iplocation(serverIp, ["https://ipapi.co/*/json/"]).then((res) => {
-        var location = {
-            country_code: res.country,
-            country_name: res.country_name,
-            latitude: res.latitude,
-            longitude: res.longitude,
-            city: res.city
-        };
-        callback(location);
-    }).catch((error) => {
-        console.log("Geo data not found");
-        callback(null);
-    });
 
-}
+// function WriteLog(data) {
+//     if (fs.exists(path)) {
+//         fs.writeFile(path, data, function (err) {
+//             if (err) return console.log(err);
+//             console.log(data + ' > LogFile.txt');
+//         });
+//     }
+//     else {
+//         fs.appendFile(path, "\r\n" + data, function (err) {
+//             if (err) return console.log(err);
+//             console.log(data + ' > LogFile.txt');
+//         });
+//     }
+
+// }
+
+

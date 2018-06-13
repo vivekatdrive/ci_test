@@ -1,0 +1,89 @@
+﻿body {
+    padding-top: 80px;
+    background-image: url("../images/backgroundtile.png");
+    background-repeat: repeat;
+}
+
+.loginFormStyle {
+    max-width: 400px;
+    margin: 50px auto;
+    background: #fff;
+    border-radius: 2px;
+    padding: 20px;
+    font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+.glowing-border {
+    border: 2px solid #7E7B7E;
+}
+
+.glowinPanel {
+    border: 2px solid #ED1C24;
+}
+
+
+input[type="text"]:focus, input[type="password"]:focus {
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(0,0,0,0);
+    outline: 0 none;
+}
+
+input[type="text"], input[type="password"] {
+    background-image: url("../images/background.png");
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(0,0,0,0);
+    outline: 0 none;
+    color: #dddddd;
+}
+
+.input-group-addon {
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1;
+    color: #555;
+    text-align: center;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.mainPanel, form {
+    background-image: url("../images/background.png");
+    border: 2px solid transparent;
+    -moz-border-image: -moz-linear-gradient(top, #ED1C24 0%, #6C0D11 100%);
+    -webkit-border-image: -webkit-linear-gradient(top, #ED1C24 0%, #6C0D11 100%);
+    border-image: linear-gradient(to bottom, #ED1C24 0%, #6C0D11 100%);
+    border-image-slice: 1;
+}
+
+.form-group {
+    border: 2px solid transparent;
+    -moz-border-image: -moz-linear-gradient(top, #FFFFFF 0%, #5E5D5D 100%);
+    -webkit-border-image: -webkit-linear-gradient(top, #FFFFFF 0%, #5E5D5D 100%);
+    border-image: linear-gradient(to bottom, #FFFFFF 0%, #5E5D5D 100%);
+    border-image-slice: 1;
+}
+
+.box {
+    background: red; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(#808080, #272727); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#808080, #272727); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#808080, #272727); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#808080, #272727); /* Standard syntax */
+}
+
+.inputpanel {
+    background-image: url("../images/background.png");
+}
+
+button, a {
+    background: transparent;
+    border: none;
+}
+
+button:focus {
+    outline: none;
+}

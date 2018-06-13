@@ -1,0 +1,399 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Node Authentication</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" />
+    <!-- load bootstrap css -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" />
+
+    <link rel="stylesheet" href="../css/RegistrationStyle.css" />
+    <!-- load fontawesome -->
+    <style>
+        #protocol {
+            opacity: 0;
+        }
+
+        .form-control {
+            background-color: transparent;
+            color: #9C9C9C;
+        }
+
+        option {
+            color: #000;
+            padding: 5px;
+        }
+
+        .registerFormStyle {
+            max-width: 500px;
+            min-height: 400px;
+            max-height: 500px;
+            margin: 50px auto;
+            background-color: transparent;
+            border-radius: 2px;
+            padding: 40px;
+            font-family: Georgia, "Times New Roman", Times, serif;
+        }
+
+        .configmainPanel {
+            background-image: url("../images/background.png");
+            background-repeat: repeat;
+            border: 2px solid transparent;
+            -moz-border-image: -moz-linear-gradient(top, #ED1C24 0%, #6C0D11 100%);
+            -webkit-border-image: -webkit-linear-gradient(top, #ED1C24 0%, #6C0D11 100%);
+            border-image: linear-gradient(to bottom, #ED1C24 0%, #6C0D11 100%);
+            border-image-slice: 1;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container" style="margin: 100 400 400 400">
+
+        <div class="col-sm-6 col-sm-offset-3">
+
+
+
+            <input id="protocol" value=".chx" placeholder="custom protocol" />
+            <!-- Mozilla Only -->
+            <iframe id="hiddenIframe" src="about:blank" style="display: none"></iframe>
+            <!-- IE Case 1 -->
+            <a id="hiddenLink" style="display: none;" href="#">custom protocol</a>
+            <div class="panel panel-default configmainPanel">
+                <div class="text-center">
+                    <img src="../images/challenger-logo.png" width="500" height="200" style="padding: 40px;" />
+                </div>
+                <form class="registerFormStyle" style="padding: 20px; background-color: transparent;">
+                    <div class="form-group">
+                        <label for="gameId" style="color: #9C9C9C;">Game ID:</label>
+                        <select name="GameId" class="form-control glowing-border inputpnel" id="gameId" onchange="onGameIdChange()">
+                            <option value="1">Counter Strike Global Offensive</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label style="color: #9C9C9C;">Challenge Amount:</label>
+                        <div class="form-group">
+
+                            <input type="text" class="form-control glowing-border inputpnel" value="1" placeholder="Challenge Amount" name="challengerAmount" id="challengeAmount" aria-label="Username" aria-describedby="basic-addon1" onkeypress='validate(event)' onchange="onChallengeAmtChange()" required="" />
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="chlType" style="color: #9C9C9C;">Challenge Type:</label>
+                        <select name="ChallengeType" class="form-control glowing-border inputpnel" id="chlType" onchange="onChallengeTypeChange()">
+                            <option value="Normal">Normal</option>
+                            <option value="Standard">Standard</option>
+                            <option value="Expert">Expert</option>
+                        </select>
+                    </div>
+                    <div class="text-center">
+                        <button type="button" class="pull-left" style="color: #928D90; margin-right: 25px; margin-top: 20px;" id="launch" onclick="CreateSession()">
+                            <img src="../images/confirm.png" />
+                        </button>
+                        <!--     <a href="/confirm" class="pull-left"  style="color:#928D90;margin-right:25px; margin-top:20px;">
+                <img src="../images/confirm.png" />
+              </a>-->
+                        <a href="/logoff" class="pull-right" style="color: #928D90; margin-left: 25px; margin-top: 20px;">
+                            <img src="../images/logoutButton.png" />
+                        </a>
+                        <input type="text" id="txtHiddenUserId" name="userId" style="display: none;" />
+                        <input type="text" id="sessionId" name="userId" style="display: none;" />
+                    </div>
+
+                </form>
+
+            </div>
+
+
+
+        </div>
+
+    </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+
+        // var sessionId;
+        //window.onload = function () {
+        //    debugger;
+
+        //    var qs =getQueryStrings();
+        //    var userId =atob(qs["userId"]);
+        //    $('#txtHiddenUserId').val(userId);
+        //    document.getElementById('sessionId').value = guid();
+        //    //  document.getElementById("hdnChlAmt").value = document.getElementById('chlngAmt').options[document.getElementById('chlngAmt').selectedIndex].value;
+        //    //document.getElementById("hdnChlType").value = document.getElementById('chlType').options[document.getElementById('chlType').selectedIndex].value;
+        //    $("#hdnChlAmt").val($("#hdnChlAmt option:selected").val());
+        //    $("#hdnChlType").val($("#hdnChlType option:selected").val());
+        //  //  document.getElementById("hdnSessionId").value = document.getElementById('sessionId').innerText;
+        //    //console.log(sessionId + ' ' + chlType + ' ' + chlamt);
+        //}
+        //function guid() {
+        //    function s4() {
+        //        return Math.floor((1 + Math.random()) * 0x10000)
+        //            .toString(16)
+        //            .substring(1);
+        //    }
+        //    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+        //        s4() + '-' + s4() + s4() + s4();
+        //}
+        function onChallengeTypeChange() {
+            document.getElementById("hdnChlType").value = document.getElementById('chlType').options[document.getElementById('chlType').selectedIndex].value;
+            alert(document.getElementById("hdnChlType").value);
+        }
+        function onChallengeAmtChange() {
+            document.getElementById("hdnChlAmt").value = document.getElementById('chlngAmt').options[document.getElementById('chlngAmt').selectedIndex].value;
+        }
+        // document.getElementById('form1').onsubmit = function () {
+        //   console.log(document.getElementById('form1'));
+
+        //};
+        function getQueryStrings() {
+            var assoc = {};
+            var decode = function (s) { return decodeURIComponent(s.replace(/\+/g, " ")); };
+            var queryString = location.search.substring(1);
+            var keyValues = queryString.split('&');
+
+            for (var i in keyValues) {
+                var key = keyValues[i].split('=');
+                if (key.length > 1) {
+                    assoc[decode(key[0])] = decode(key[1]);
+                }
+            }
+
+            return assoc;
+        }
+        function CreateSession() {
+            var jsonData = JSON.stringify({
+                "gameId": document.getElementById('gameId').options[document.getElementById('gameId').selectedIndex].value,
+                "challengeType": document.getElementById('chlType').options[document.getElementById('chlType')
+                    .selectedIndex].value,
+                "challengeAmount": document.getElementById('challengeAmount').value
+            });
+
+
+            $.post('/confirm',
+                { data: jsonData },
+                function (res) {
+
+                    if (res.responseCode == "200") {
+                        sessionId = res.responseMessage;
+                        $('#sessionId').val(res.responseMessage);
+                        checkProtocal();
+                        window.location = "chx:?" + btoa("sessionId=" + res.responseMessage + "&ChallengeAmmount=" + document.getElementById('challengeAmount').value + "&ChallengeType=" + document.getElementById('chlType').options[document.getElementById('chlType').selectedIndex].value + "&gameId=" + document.getElementById('gameId').options[document.getElementById('gameId').selectedIndex].innerText);
+                    }
+                    else if (res.responseCode == "403") {
+                        alert(res.responseMessage);
+                    }
+                    else if (res.responseCode == "409") {
+                        alert(res.responseMessage);
+                    }
+                    else if (res.responseCode == "422" || res.responseCode == "500") {
+                        alert(res.responseMessage);
+                    }
+                    else {
+                        alert(res.responseMessage);
+                    }
+                    console.log('callback after your node function is done' + res)
+                });
+
+        }
+        function CloseSession() {
+            var jsonData = JSON.stringify({ "sessionId": document.getElementById('sessionId').value });
+            $.ajax({
+                url: 'http://SessionManager-staging-env.3y2xq3e9p2.us-west-2.elasticbeanstalk.com/closeSession',
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                dataType: "json",
+                data: jsonData,
+                success: function (data, textStatus, xhr) {
+                    if (data != null && data != "") {
+                        var result = JSON.parse(data);
+                        if (result.STATUS == "200") {
+                            window.location = "http://localhost:54367/index.html";
+                        }
+                        else if (result.STATUS == "400" || result.STATUS == "422" || result.STATUS == "500") {
+                            alert(result.errorMessage);
+                        }
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    alert("There was an internal server error.");
+                }
+            });
+        }
+
+    </script>
+    <script>
+        function validate(evt) {
+            var theEvent = evt || window.event;
+            var key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+            var regex = /[0-9]|\./;
+            if (!regex.test(key)) {
+                theEvent.returnValue = false;
+                if (theEvent.preventDefault) theEvent.preventDefault();
+            }
+        }
+
+        //Default State
+        var isSupported = false;
+
+        //Helper Methods
+        function getProtocol() {
+            return "chx";
+        }
+
+        function getUrl() {
+            //return "chx:?sessionId=" + document.getElementById('sessionId').value + "&ChallengeAmmount=" + document.getElementById('challengeAmount').value + "&ChallengeType=" + document.getElementById('chlType').options[document.getElementById('chlType').selectedIndex].value;
+            return "chx:?" + btoa("sessionId=" + document.getElementById('sessionId').value + "&ChallengeAmmount=" + document.getElementById('challengeAmount').value + "&ChallengeType=" + document.getElementById('chlType').options[document.getElementById('chlType').selectedIndex].value + "&gameId=" + document.getElementById('gameId').options[document.getElementById('gameId').selectedIndex].innerText);
+
+        }
+
+        function result() {
+            if (!isSupported) {
+                var element = document.createElement('a');
+                element.setAttribute('href', './challenger.chx');
+                element.setAttribute('download', 'challenger.chx');
+                element.setAttribute('id', 'downloadlink');
+                element.style.display = 'none';
+                document.body.appendChild(element);
+                var link = document.getElementById('downloadlink');
+                var urlData = "chx:?" + btoa("sessionId=" + document.getElementById('sessionId').value + "&ChallengeAmmount=" + document.getElementById('challengeAmount').value + "&ChallengeType=" + document.getElementById('chlType').options[document.getElementById('chlType').selectedIndex].value + "&gameId=" + document.getElementById('gameId').options[document.getElementById('gameId').selectedIndex].innerText);
+
+                link.href = makeTextFile(urlData);
+
+                element.click();
+                document.body.removeChild(element);
+
+            }
+        }
+        var textFile = null,
+            makeTextFile = function (text) {
+                var data = new Blob([text], { type: 'text/plain' });
+                if (textFile !== null) {
+                    window.URL.revokeObjectURL(textFile);
+                }
+
+                textFile = window.URL.createObjectURL(data);
+                return textFile;
+            };
+        //Handle Click on Launch button
+        function checkProtocal() {
+            if ($.browser.mozilla) {
+                launchMozilla();
+            } else if ($.browser.chrome || $.browser.safari) {
+                launchChrome();
+            } else if ($.browser.msie) {
+                launchIE();
+            }
+        };
+        function launch() {
+            if ($.browser.mozilla) {
+                launchMozilla();
+            } else if ($.browser.chrome) {
+
+                launchChrome();
+            } else if ($.browser.msie) {
+                launchIE();
+            }
+        }
+        //Handle IE
+        function launchIE() {
+
+            var url = getUrl(),
+                aLink = $('#hiddenLink')[0];
+
+            isSupported = false;
+            aLink.href = url;
+
+            //Case 1: protcolLong
+            console.log("Case 1");
+            if (navigator.appName == "Microsoft Internet Explorer"
+                && aLink.protocolLong == "Unknown Protocol") {
+                isSupported = false;
+                result();
+                return;
+            }
+
+            //IE10+
+            if (navigator.msLaunchUri) {
+                navigator.msLaunchUri(url,
+                    function () { isSupported = true; result(); }, //success
+                    function () { isSupported = false; result(); }  //failure
+                );
+                return;
+            }
+
+            //Case2: Open New Window, set iframe src, and access the location.href
+            console.log("Case 2");
+            var myWindow = window.open('', '', 'width=0,height=0');
+            myWindow.document.write("<iframe src='" + url + "></iframe>");
+            setTimeout(function () {
+                try {
+                    myWindow.location.href;
+                    isSupported = true;
+                } catch (e) {
+                    //Handle Exception
+                }
+
+                if (isSupported) {
+                    myWindow.setTimeout('window.close()', 100);
+                } else {
+                    myWindow.close();
+                }
+                result();
+            }, 100)
+
+        };
+
+        //Handle Firefox
+        function launchMozilla() {
+
+            var url = getUrl(),
+                iFrame = $('#hiddenIframe')[0];
+
+            isSupported = false;
+
+            //Set iframe.src and handle exception
+            try {
+                iFrame.contentWindow.location.href = url;
+                isSupported = true;
+                result();
+            } catch (e) {
+                //FireFox
+                if (e.name == "NS_ERROR_UNKNOWN_PROTOCOL") {
+                    isSupported = false;
+                    result();
+                }
+            }
+        }
+
+        //Handle Chrome
+        function launchChrome() {
+
+            var url = getUrl(),
+                protcolEl = $('#protocol')[0];
+
+            isSupported = false;
+
+
+            protcolEl.focus();
+            protcolEl.onblur = function () {
+                isSupported = true;
+                console.log("Text Field onblur called");
+            };
+
+            //will trigger onblur
+            location.href = url;
+
+            //Note: timeout could vary as per the browser version, have a higher value
+            setTimeout(function () {
+                protcolEl.onblur = null;
+                result()
+            }, 500);
+
+        }
+    </script>
+</body>
+</html>

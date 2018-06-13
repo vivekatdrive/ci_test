@@ -1,0 +1,86 @@
+﻿<!doctype html>
+<html>
+  <head>
+    <title>Node Authentication</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"/>
+    <!-- load bootstrap css -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"/>
+
+    <link rel="stylesheet" href="../css/RegistrationStyle.css"/>
+    <!-- load fontawesome -->
+    <style>
+
+    </style>
+
+  </head>
+  <body>
+    <div class="container" style="margin:100 400 400 400">
+
+      <div class="col-sm-6 col-sm-offset-3">
+
+
+
+        <!-- show any messages that come back with authentication -->
+        <!-- LOGIN FORM -->
+        <div class="panel panel-default mainPanel">
+          <div class="text-center">
+            <img src="../images/challenger-logo.png" width="500" height="200"  style="padding:40px;" />
+          </div>
+          <form action="/login" method="post" class="registerFormStyle" style="padding:20px; background-color:transparent;">
+            <div class="form-group glowing-border">
+              <div class="inputpanel">
+                <input type="text" class="form-control" placeholder="FIRST NAME" name="firstName"  maxlength="50" required=""/>
+              </div>
+            </div>
+            <div class="form-group glowing-border">
+              <div class="inputpanel">
+                <input type="text" class="form-control" placeholder="LAST NAME" name="lastName"  maxlength="50" required=""/>
+              </div>
+            </div>
+            <div class="form-group glowing-border">
+              <div class=" inputpanel">
+                <input type="text" class="form-control" placeholder="ADDRESS" name="address" required=""/>
+              </div>
+            </div>
+            <div class="form-group glowing-border">
+              <div class="inputpanel">
+                <input type="email" class="form-control" placeholder="EMAIL" name="email"  maxlength="150" required=""/>
+              </div>
+            </div>
+            <div class="form-group glowing-border">
+              <div class="inputpanel">
+                <input type="text" class="form-control" placeholder="USERNAME" name="username" aria-label="Username" maxlength="50" required=""/>
+              </div>
+            </div>
+            <div class="form-group glowing-border">
+              <div class="inputpanel">
+                <input type="password" class="form-control" placeholder="PASSWORD" name="password" aria-label="password" aria-describedby="basic-addon1" required=""/>
+              </div>
+            </div>
+            <!--<div class="form-group text-center">
+              <label><input type="checkbox" value=""><span style="margin-left:10px; color:#9C9C9C;">I have read and agreed to the Terms</span></label>
+            </div>-->
+
+
+
+            <div class="text-center">
+              <button type="submit" class="pull-left"  style="color:#928D90;margin-right:25px; margin-top:20px;">
+                <img src="../images/register.png" />
+              </button>
+              <a href="/cancel" class="pull-right"  style=" color:#928D90 margin-left:25px; margin-top:20px;">
+                <img src="../images/cancel.png" />
+              </a>
+            </div>
+
+          </form>
+
+        </div>
+
+
+
+      </div>
+
+    </div>
+
+  </body>
+</html>

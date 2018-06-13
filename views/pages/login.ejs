@@ -1,0 +1,67 @@
+﻿<!-- views/login.ejs -->
+<!doctype html>
+<html>
+  <head>
+    <title>Node Authentication</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"/>
+    <!-- load bootstrap css -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"/>
+    <!-- load fontawesome -->
+    <link rel="stylesheet" href="../css/LoginStyle.css"/>
+
+  </head>
+  <body>
+    <div class="container" style="margin:100 400 400 400">
+
+      <div class="col-sm-6 col-sm-offset-3">
+
+
+
+        <!-- show any messages that come back with authentication -->
+        <!-- LOGIN FORM -->
+        <div class="panel panel-default mainPanel">
+          <!--<h1><span class="fa fa-sign-in text-center"></span> Login</h1>-->
+
+          <div class="text-center">
+            <img src="../images/challenger-logo.png" width="500" height="200" style="padding:40px;" />
+          </div>
+          <form action="/login" method="post" class="loginFormStyle" style="padding:20px; background-color:transparent;">
+            <div class="form-group glowing-border">
+              <div class="input-group inputpanel">
+                <span class="input-group-addon" id="basic-addon1" style="backgroundColor:White;">
+                  <span class="fa fa-user"></span>
+                </span>
+                <input type="text" class="form-control" placeholder="USERNAME" name="username"   maxlength="150" required=""/>
+              </div>
+            </div>
+            <div class="form-group glowing-border">
+              <div class="input-group">
+                <span class="input-group-addon" id="basic-addon1">
+                  <span class="fa fa-key"></span>
+                </span>
+                <input type="password" class="form-control" placeholder="PASSWORD" name="password" required="" />
+              </div>
+            </div>
+
+
+            <div class="text-center">
+              <button type="submit"  style="color:#928D90;margin-right:25px; margin-top:20px;">
+                <img src="../images/Login.png" />
+              </button>
+              <a href="/signup"  style=" color:#928D90 margin-left:25px; margin-top:20px;">
+                <img src="../images/register.png" />
+              </a>
+            </div>
+
+          </form>
+
+        </div>
+
+
+
+      </div>
+
+    </div>
+
+  </body>
+</html>
